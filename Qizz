@@ -1,0 +1,85 @@
+import React, { useState } from "react";
+
+function QuizApp() {
+  const questions = [
+    {
+      question: "What is the capital of India?",
+      options: ["Delhi", "Mumbai", "Kolkata", "Chennai"],
+      answer: "Delhi",
+    },
+    {
+      question: "React is a ___?",
+      options: ["Library", "Framework", "Language", "Tool"],
+      answer: "Library",
+    },
+    {
+      question: "Which company developed React?",
+      options: ["Google", "Microsoft", "Facebook", "Amazon"],
+      answer: "Facebook",
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+
+  const handleAnswer = (option) => {
+    if (option === questions[current].answer) {
+      setScore(score + 1);
+    }
+    const next = current + 1;
+    if (next < questions.length) {
+      setCurrent(next);
+    } else {
+      setShowResult(true);
+    }
+  };
+
+  const restartQuiz = () => {
+    setCurrent(0);
+    setScore(0);
+    setShowResult(false);
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>Simple Quiz App</h2>
+      {showResult ? (
+        <div>
+          <h3>Your Score: {score} / {questions.length}</h3>
+          <button
+            onClick={restartQuiz}
+            style={{
+              marginTop: "10px",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Restart Quiz
+          </button>
+        </div>
+      ) : (
+        <div>
+          <h3>{questions[current].question}</h3>
+          {questions[current].options.map((option, i) => (
+            <button
+              key={i}
+              onClick={() => handleAnswer(option)}
+              style={{
+                margin: "5px",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default QuizApp;
