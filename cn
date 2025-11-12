@@ -5,7 +5,6 @@ def go_back_n(frames, window_size):
     sent = 0
     
     while sent < frames:
-        # Send frames in current window
         print("\nSending Frames:")
         for i in range(sent, min(sent + window_size, frames)):
             print(f"Frame {i} Sent")
@@ -13,7 +12,6 @@ def go_back_n(frames, window_size):
         ack = int(input(f"\nEnter last Acknowledged Frame Number (or -1 for loss): "))
         
         if ack == -1:
-            # Frame lost -> Go Back N
             print("Acknowledgement Lost! Resending the window...")
         else:
             sent = ack + 1
