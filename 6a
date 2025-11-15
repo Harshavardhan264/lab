@@ -1,0 +1,42 @@
+import React, { useState } from "react";
+
+// Child Component – receives props
+function Message(props) {
+  return (
+    <h2 style={{ color: "blue" }}>
+      Welcome, {props.username}!
+    </h2>
+  );
+}
+
+// Parent Component – uses state and events
+function App() {
+  const [count, setCount] = useState(0);
+
+  const increaseCount = () => {
+    setCount(count + 1);
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "40px" }}>
+      <Message username="Harsha" />
+
+      <h3>Count Value: {count}</h3>
+
+      <button
+        onClick={increaseCount}
+        style={{
+          padding: "10px 20px",
+          background: "green",
+          color: "white",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        Increase
+      </button>
+    </div>
+  );
+}
+
+export default App;
