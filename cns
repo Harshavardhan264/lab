@@ -1,0 +1,125 @@
+import java.util.*;
+
+public class CryptoExperiment3 {
+
+    // ---------- Caesar Cipher ----------
+    static String caesarEncrypt(String text, int key) {
+        StringBuilder result = new StringBuilder();
+
+        for (char ch : text.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char base = Character.isUpperCase(ch) ? 'A' : 'a';
+                ch = (char)((ch - base + key) % 26 + base);
+            }
+            result.append(ch);
+        }
+        return result.toString();
+    }
+
+    static String caesarDecrypt(String text, int key) {
+        return caesarEncrypt(text, 26 - key);
+    }
+
+    // ---------- Substitution Cipher ----------
+    static String substitutionEncrypt(String text) {
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+        String sub   = "zyxwvutsrqponmlkjihgfedcba";
+
+        text = text.toLowerCase();
+        StringBuilder result = new StringBuilder();
+
+        for (char ch : text.toCharArray()) {
+            int index = alpha.indexOf(ch);
+            if (index != -1)
+                result.append(sub.charAt(index));
+            else
+                result.append(ch);
+        }
+        return result.toString();
+    }
+
+    static String substitutionDecrypt(String text) {
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+        String sub   = "zyxwvutsrqponmlkjihgfedcba";
+
+        StringBuilder result = new StringBuilder();
+
+        for (char ch : text.toCharArray()) {
+            int index = sub.indexOf(ch);
+            if (index != -1)
+                result.append(alpha.charAt(index));
+            else
+                result.append(ch);
+        }
+        return result.toString();
+    }
+
+    // ---------- Hill Cipher (2x2 Encryption Only) ----------
+    static void hillCipher(String text) {
+        int[][] key = {{3, 3}, {2, 5}};
+
+        text = text.toUpperCase();
+
+        // Padding if odd length
+        if (text.length() % 2 != 0)
+            text += "X";
+
+        System.out.print("Hill Cipher Encrypted: ");
+
+        for (int i = 0; i < text.length(); i += 2) {
+            int[] msg = new int[2];
+            int[] res = new int[2];
+
+            msg[0] = text.charAt(i) - 'A';
+            msg[1] = text.charAt(i + 1) - 'A';
+
+            for (int r = 0; r < 2; r++) {
+                res[r] = (key[r][0] * msg[0] + key[r][1] * msg[1]) % 26;
+            }
+
+            System.out.print((char)(res[0] + 'A'));
+            System.out.print((char)(res[1] + 'A'));
+        }
+        System.out.println();
+    }
+
+    // ---------- Main ----------
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
+
+        System.out.print("Enter Caesar key: ");
+        int key = sc.nextInt();
+
+        System.out.println("\nOriginal Text: " + text);
+
+        // Caesar Cipher
+        String c = caesarEncrypt(text, key);
+        System.out.println("Caesar Encrypted: " + c);
+        System.out.println("Caesar Decrypted: " + caesarDecrypt(c, key));
+
+        // Substitution Cipher
+        String s = substitutionEncrypt(text);
+        System.out.println("Substitution Encrypted: " + s);
+        System.out.println("Substitution Decrypted: " + substitutionDecrypt(s));
+
+        // Hill Cipher (Encryption only)
+        hillCipher(text);
+
+        sc.close();
+    }
+}
+
+
+output:
+Enter text: HELLO
+Enter Caesar key: 3
+
+Original Text: HELLO
+Caesar Encrypted: KHOOR
+Caesar Decrypted: HELLO
+Substitution Encrypted: svool
+Substitution Decrypted: hello
+Hill Cipher Encrypted: HIOZHN
